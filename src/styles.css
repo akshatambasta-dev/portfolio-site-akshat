@@ -25,7 +25,7 @@
 .display-name{display:block;position:relative;z-index:2;font-family:var(--blackletter);font-weight:400;font-size:clamp(106px,17vw,232px);line-height:.8;letter-spacing:.005em;padding:.04em .04em .11em .005em;margin-left:-.025em;color:#050505;text-shadow:0 1px 0 rgba(0,0,0,.12);white-space:nowrap;animation:name-arrive 1.15s cubic-bezier(.14,.83,.2,1) both}
 .glitch-type::before,.glitch-type::after{content:attr(data-text);position:absolute;inset:0;pointer-events:none;opacity:0;white-space:nowrap}
 .glitch-type::before{color:var(--cyan);mix-blend-mode:multiply;clip-path:polygon(0 7%,100% 3%,100% 36%,0 42%,0 63%,100% 58%,100% 78%,0 84%);transform:translate(var(--glitch-x,0px),var(--glitch-y,0px))}
-.glitch-type::after{color:#ed2626;mix-blend-mode:multiply;clip-path:polygon(0 18%,100% 23%,100% 47%,0 51%,0 71%,100% 67%,100% 94%,0 88%);transform:translate(calc(var(--glitch-x,0px)*-1),calc(var(--glitch-y,0px)*-1))}
+.glitch-type::after{color:#ed2626;mix-blend-mode:multiply;clip-path:polygon(0 18%,100% 23%,100% 47%,0 51%,0 71%,100% 67%,100% 94%,0 88%);transform:translate(calc(0px - var(--glitch-x,0px)),calc(0px - var(--glitch-y,0px)))}
 .hero-main.is-distorting .glitch-type::before{opacity:.78;animation:chromatic-slice .21s steps(2,end) infinite}
 .hero-main.is-distorting .glitch-type::after{opacity:.62;animation:chromatic-slice .16s steps(2,end) infinite reverse}
 .hero-subline{display:block;font-size:clamp(19px,2.5vw,36px);font-weight:800;letter-spacing:-.06em;line-height:1.03;white-space:normal;margin-top:19px;animation:title-enter 850ms var(--ease) both;animation-delay:130ms}
