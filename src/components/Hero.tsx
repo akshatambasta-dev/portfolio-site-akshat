@@ -76,17 +76,17 @@ export function Hero() {
         <div className={`hero-display-block ${glitch.active ? 'is-distorting' : ''}`}>
           <div className="hero-title-wrap">
             <h1 id="hero-title-h" className="hero-main-title">
-              {/* Blackletter Display Signature with Chromatic Aberration */}
+              {/* High-Impact Architectural Display Signature with Chromatic Aberration */}
               <span
                 className="name-display glitch-target"
-                data-text="Akshat Ambasta"
+                data-text="AKSHAT AMBASTA"
                 style={{
                   '--glitch-x': `${glitch.x}px`,
                   '--glitch-y': `${glitch.y}px`,
                 } as CSSProperties}
               >
-                <span className="name-row">Akshat</span>
-                <span className="name-row">Ambasta</span>
+                <span className="name-row">AKSHAT</span>
+                <span className="name-row">AMBASTA</span>
               </span>
 
               {/* Bold Architectural Headline */}

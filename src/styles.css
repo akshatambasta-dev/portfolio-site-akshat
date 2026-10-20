@@ -1,7 +1,7 @@
 /* ==========================================================================
    AKSHAT AMBASTA PORTFOLIO — MASTER DESIGN SYSTEM & MOTION SPECIFICATION
    Palette: Black (#000000), Deep Red (#A11212), Pure White (#FFFFFF), Grey (#E5E7EB)
-   Typography: Inter, Newsreader, UnifrakturMaguntia, System Monospace
+   Typography: Cinzel, Syne, Inter, Newsreader, System Monospace
    ========================================================================== */
 
 :root {
@@ -21,7 +21,7 @@
 
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-serif: 'Newsreader', Georgia, Cambria, serif;
-  --font-blackletter: 'UnifrakturMaguntia', 'Cinzel Decorative', serif;
+  --font-display: 'Cinzel', 'Newsreader', Georgia, serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -179,6 +179,26 @@ button:focus-visible {
 .cursor-ring.is-hovering {
   border-color: var(--deep-red);
   background: rgba(161, 18, 18, 0.08);
+}
+
+/* --------------------------------------------------------------------------
+   Fluid & Viscous WebGL Wake Canvas (Ryan Ritzenthaler reference effect)
+   -------------------------------------------------------------------------- */
+.fluid-wake-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+  opacity: 0.75;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .fluid-wake-canvas {
+    display: none !important;
+  }
 }
 
 /* --------------------------------------------------------------------------
@@ -392,10 +412,11 @@ button:focus-visible {
 .name-display {
   display: flex;
   flex-direction: column;
-  font-family: var(--font-blackletter);
-  font-size: clamp(64px, 12.5vw, 186px);
-  line-height: 0.84;
-  letter-spacing: -0.01em;
+  font-family: var(--font-display);
+  font-size: clamp(54px, 10.5vw, 154px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
   color: var(--dark);
   position: relative;
   user-select: none;
@@ -407,9 +428,9 @@ button:focus-visible {
 
 .name-display.glitch-target::before,
 .name-display.glitch-target::after {
-  content: "Akshat\A Ambasta";
+  content: "AKSHAT\A AMBASTA";
   white-space: pre;
-  line-height: 0.84;
+  line-height: 0.88;
   position: absolute;
   top: 0;
   left: 0;
@@ -1950,42 +1971,6 @@ button:focus-visible {
 .bar-segment.gas { background-color: #d97706; }
 .bar-segment.solar { background-color: #10b981; }
 
-/* Doomsday Protocol Terminal */
-.preview-doomsday {
-  background: #0d0d0f;
-  color: #38bdf8;
-  border-color: #1e293b;
-}
-
-.terminal-session-mock {
-  margin: 10px 0;
-  font-family: var(--font-mono);
-}
-
-.terminal-top {
-  display: flex;
-  justify-content: space-between;
-  font-size: 7px;
-  border-bottom: 1px solid #1e293b;
-  padding-bottom: 4px;
-  color: #94a3b8;
-}
-
-.terminal-timer {
-  color: #ef4444;
-  font-weight: 700;
-}
-
-.terminal-lines {
-  font-size: 7px;
-  line-height: 1.5;
-  margin-top: 6px;
-}
-
-.term-prompt { color: #f8fafc; }
-.term-system { color: #94a3b8; }
-.term-success { color: #4ade80; }
-
 /* Card Content Details */
 .project-content-block {
   display: flex;
@@ -2541,13 +2526,14 @@ button:focus-visible {
   margin-bottom: 24px;
 }
 
-.solar-heading-blackletter {
-  font-family: var(--font-blackletter);
-  font-size: clamp(80px, 15vw, 210px);
-  line-height: 0.85;
-  letter-spacing: -0.01em;
+.solar-heading-display {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 12vw, 180px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
   color: var(--white);
-  text-shadow: 0 0 40px rgba(161, 18, 18, 0.4);
+  text-shadow: 0 0 50px rgba(161, 18, 18, 0.4);
 }
 
 .solar-heading-dot {

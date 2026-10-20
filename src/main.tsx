@@ -1,5 +1,7 @@
 import { useEffect, StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
+import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 import './styles.css';
 
 import { Header } from './components/Header';
@@ -16,6 +18,7 @@ import { Skills } from './components/Skills';
 import { SolarCloser } from './components/SolarCloser';
 import { Contact } from './components/Contact';
 import { Cursor } from './components/Cursor';
+import { FluidCanvas } from './components/FluidCanvas';
 
 function useRevealObserver() {
   useEffect(() => {
@@ -69,7 +72,35 @@ function useRevealObserver() {
   }, []);
 }
 
+function useSmoothScroll() {
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    const lenis = new Lenis({
+      duration: 1.15,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+      touchMultiplier: 1.5,
+    });
+
+    let rafId: number;
+    function raf(time: number) {
+      lenis.raf(time);
+      rafId = requestAnimationFrame(raf);
+    }
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
+  }, []);
+}
+
 function App() {
+  useSmoothScroll();
   useRevealObserver();
 
   return (
@@ -78,6 +109,9 @@ function App() {
       <a href="#main-content" className="skip-to-content-anchor">
         Skip to main content
       </a>
+
+      {/* Viscous WebGL liquid wake (Ryan Ritzenthaler reference effect) */}
+      <FluidCanvas />
 
       {/* Desktop magnetic custom cursor */}
       <Cursor />

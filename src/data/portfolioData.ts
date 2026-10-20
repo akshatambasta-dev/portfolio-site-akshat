@@ -9,7 +9,7 @@ export interface ProjectItem {
   recognition: string[];
   href?: string;
   liveLabel?: string;
-  kind: 'voltvision' | 'file2base' | 'smartfarm' | 'carbon' | 'doomsday';
+  kind: 'voltvision' | 'file2base' | 'smartfarm' | 'carbon';
   architecture?: string[];
 }
 
@@ -237,33 +237,6 @@ export const OTHER_PROJECTS: ProjectItem[] = [
       'Selected and presented at State-Level Science Exhibition, 2024',
     ],
     liveLabel: 'Computational Model',
-  },
-  {
-    id: 'doomsday',
-    kind: 'doomsday',
-    title: 'DOOMSDAY PROTOCOL',
-    category: 'MULTI-CLIENT LAN ESCAPE SYSTEM',
-    badge: 'COLLEGE LABORATORY DEPLOYMENT',
-    description: 'A synchronized multi-terminal puzzle and escape room game engine designed for college lab LANs, coordinating countdown timers, puzzle phases, and station progress across multiple PCs simultaneously.',
-    contributions: [
-      'Architected centralized Flask server to arbitrate synchronized game phases and timers',
-      'Built immersive terminal-styled client interfaces with real-time clue reveals',
-      'Implemented admin supervisor dashboard to monitor workstation state, trigger events, and override timers',
-      'Resolved multi-PC network latency, state divergence, and station concurrency on laboratory LAN',
-    ],
-    technologies: [
-      'Python & Flask',
-      'Multi-Client LAN Sync',
-      'HTML5 / CSS / Vanilla JS',
-      'State Machine Architecture',
-      'Terminal UI Design',
-      'Lab Network Debugging',
-    ],
-    recognition: [
-      'Successfully deployed and executed across multiple PCs in college laboratory event',
-      'Zero downtime across sequential student game cohorts',
-    ],
-    liveLabel: 'Network Case Study',
   },
 ];
 

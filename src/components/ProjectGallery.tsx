@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LayoutGrid, List, ArrowUpRight, Database, Sprout, Leaf, ShieldAlert } from 'lucide-react';
+import { LayoutGrid, List, ArrowUpRight, Database, Sprout, Leaf } from 'lucide-react';
 import { OTHER_PROJECTS, type ProjectItem } from '../data/portfolioData';
 
 function ProjectBespokePreview({ item }: { item: ProjectItem }) {
@@ -77,59 +77,33 @@ function ProjectBespokePreview({ item }: { item: ProjectItem }) {
     );
   }
 
-  if (item.kind === 'carbon') {
-    return (
-      <div className="card-preview-art preview-carbon" aria-hidden="true">
-        <div className="preview-top-badge">
-          <Leaf size={12} />
-          <span>CARBON CALCULATOR // PYTHON</span>
-        </div>
-        <div className="carbon-analytics-mock">
-          <div className="carbon-meter-row">
-            <div className="carbon-stat">
-              <span className="lbl">EST. MONTHLY EMISSIONS</span>
-              <strong className="val">284 kg CO₂e</strong>
-            </div>
-            <div className="carbon-delta">
-              <span className="lbl">REGIONAL GRID FACTOR</span>
-              <span className="val-factor">0.82 kg/kWh (MH)</span>
-            </div>
-          </div>
-          <div className="offset-breakdown-bar">
-            <div className="bar-segment grid" style={{ width: '65%' }}><span>GRID 65%</span></div>
-            <div className="bar-segment gas" style={{ width: '20%' }}><span>GAS 20%</span></div>
-            <div className="bar-segment solar" style={{ width: '15%' }}><span>OFFSET</span></div>
-          </div>
-        </div>
-        <div className="preview-status-strip">
-          <span>STATE LEVEL PARTICIPATION 2024</span>
-          <span>ACTIONABLE OFFSET MODEL</span>
-        </div>
-      </div>
-    );
-  }
-
-  // Doomsday Protocol
+  // Carbon Calculator
   return (
-    <div className="card-preview-art preview-doomsday" aria-hidden="true">
+    <div className="card-preview-art preview-carbon" aria-hidden="true">
       <div className="preview-top-badge">
-        <ShieldAlert size={12} />
-        <span>DOOMSDAY PROTOCOL // LAN ESCAPE ROOM</span>
+        <Leaf size={12} />
+        <span>CARBON CALCULATOR // PYTHON</span>
       </div>
-      <div className="terminal-session-mock">
-        <div className="terminal-top">
-          <span>CONSOLE // WORKSTATION_04</span>
-          <span className="terminal-timer">T-MINUS 14:28</span>
+      <div className="carbon-analytics-mock">
+        <div className="carbon-meter-row">
+          <div className="carbon-stat">
+            <span className="lbl">EST. MONTHLY EMISSIONS</span>
+            <strong className="val">284 kg CO₂e</strong>
+          </div>
+          <div className="carbon-delta">
+            <span className="lbl">REGIONAL GRID FACTOR</span>
+            <span className="val-factor">0.82 kg/kWh (MH)</span>
+          </div>
         </div>
-        <div className="terminal-lines">
-          <p className="term-prompt">$ ./auth_override --phase 02</p>
-          <p className="term-system">[INFO] SYNCHRONIZING TO CENTRAL HOST (192.168.1.100:5000)...</p>
-          <p className="term-success">[OK] CRYPTOGRAPHIC CIPHER UNLOCKED. DISPATCHING CLUE 03.</p>
+        <div className="offset-breakdown-bar">
+          <div className="bar-segment grid" style={{ width: '65%' }}><span>GRID 65%</span></div>
+          <div className="bar-segment gas" style={{ width: '20%' }}><span>GAS 20%</span></div>
+          <div className="bar-segment solar" style={{ width: '15%' }}><span>OFFSET</span></div>
         </div>
       </div>
       <div className="preview-status-strip">
-        <span>COLLEGE LAB LAN DEPLOYMENT</span>
-        <span>FLASK STATE ENGINE</span>
+        <span>STATE LEVEL PARTICIPATION 2024</span>
+        <span>ACTIONABLE OFFSET MODEL</span>
       </div>
     </div>
   );

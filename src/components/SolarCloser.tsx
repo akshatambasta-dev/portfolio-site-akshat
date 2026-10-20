@@ -96,11 +96,11 @@ const SOLAR_FRAGMENT_SHADER = `
     float n2 = snoise(coord * 2.2 + vec3(uTime * 0.15, -uTime * 0.2, 0.0));
     float plasma = n1 * 0.65 + n2 * 0.35;
 
-    // Solar palette: Core white-hot yellow to deep builder red (#A11212) to corona orange
-    vec3 whiteHot = vec3(1.0, 0.96, 0.82);
+    // Solar palette: Core incandescent gold to deep builder red (#A11212)
+    vec3 whiteHot = vec3(1.0, 0.96, 0.85);
     vec3 solarGold = vec3(1.0, 0.62, 0.15);
     vec3 solarRed = vec3(0.63, 0.07, 0.07); // #A11212
-    vec3 deepDark = vec3(0.08, 0.01, 0.02);
+    vec3 deepDark = vec3(0.06, 0.01, 0.02);
 
     vec3 color = mix(solarRed, solarGold, plasma + 0.3);
     color = mix(color, whiteHot, pow(max(plasma, 0.0), 3.0) * 1.2);
@@ -111,6 +111,38 @@ const SOLAR_FRAGMENT_SHADER = `
     color += solarGold * corona + solarRed * pow(rim, 1.8) * 1.6;
 
     gl_FragColor = vec4(color, 1.0);
+  }
+`;
+
+const CORONA_ANNULUS_VS = `
+  varying vec2 vUv;
+  void main() {
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+const CORONA_ANNULUS_FS = `
+  uniform float uTime;
+  varying vec2 vUv;
+
+  void main() {
+    vec2 p = vUv * 2.0 - 1.0;
+    float r = length(p);
+
+    // Annulus ring flare around the sun (matching reference GLSL)
+    if (r < 0.65 || r > 1.0) {
+      discard;
+    }
+
+    float angle = atan(p.y, p.x);
+    float rays = sin(angle * 12.0 + uTime * 1.2) * 0.5 + 0.5;
+    rays += sin(angle * 28.0 - uTime * 2.0) * 0.25;
+
+    float fade = smoothstep(0.65, 0.75, r) * (1.0 - smoothstep(0.85, 1.0, r));
+    vec3 flareColor = mix(vec3(0.63, 0.07, 0.07), vec3(1.0, 0.65, 0.2), rays);
+
+    gl_FragColor = vec4(flareColor, fade * (0.35 + rays * 0.45));
   }
 `;
 
@@ -151,7 +183,7 @@ export function SolarCloser() {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    // Solar sphere geometry
+    // 1. Solar core sphere
     const geometry = new THREE.SphereGeometry(1.08, 64, 64);
     const uniforms = {
       uTime: { value: 0 },
@@ -166,27 +198,61 @@ export function SolarCloser() {
     const sunMesh = new THREE.Mesh(geometry, material);
     scene.add(sunMesh);
 
-    // Subtle starfield layer in 3D
-    const starCount = 180;
+    // 2. Annulus corona ring (matching reference technique)
+    const coronaGeo = new THREE.PlaneGeometry(3.2, 3.2);
+    const coronaUniforms = { uTime: { value: 0 } };
+    const coronaMat = new THREE.ShaderMaterial({
+      vertexShader: CORONA_ANNULUS_VS,
+      fragmentShader: CORONA_ANNULUS_FS,
+      uniforms: coronaUniforms,
+      transparent: true,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    });
+    const coronaMesh = new THREE.Mesh(coronaGeo, coronaMat);
+    coronaMesh.position.z = -0.05;
+    scene.add(coronaMesh);
+
+    // 3. Twinkling starfield with varying point size & sinusoidal twinkle
+    const starCount = 240;
     const starGeo = new THREE.BufferGeometry();
     const starPositions = new Float32Array(starCount * 3);
-    for (let i = 0; i < starCount * 3; i += 3) {
-      starPositions[i] = (Math.random() - 0.5) * 12;
-      starPositions[i + 1] = (Math.random() - 0.5) * 8;
-      starPositions[i + 2] = -2 - Math.random() * 5;
+    const starTwinkles = new Float32Array(starCount);
+    const starPhases = new Float32Array(starCount);
+
+    for (let i = 0; i < starCount; i++) {
+      starPositions[i * 3] = (Math.random() - 0.5) * 14;
+      starPositions[i * 3 + 1] = (Math.random() - 0.5) * 10;
+      starPositions[i * 3 + 2] = -1.5 - Math.random() * 6;
+      starTwinkles[i] = 1.0 + Math.random() * 3.0;
+      starPhases[i] = Math.random() * Math.PI * 2;
     }
     starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
+
     const starMat = new THREE.PointsMaterial({
       color: 0xffffff,
-      size: 0.025,
+      size: 0.03,
       transparent: true,
-      opacity: 0.7,
+      opacity: 0.75,
     });
     const starPoints = new THREE.Points(starGeo, starMat);
     scene.add(starPoints);
 
+    // 4. Shooting meteor streak line
+    const meteorGeo = new THREE.BufferGeometry();
+    const meteorPos = new Float32Array([0, 0, 0, -1.2, 0.8, 0]);
+    meteorGeo.setAttribute('position', new THREE.BufferAttribute(meteorPos, 3));
+    const meteorMat = new THREE.LineBasicMaterial({
+      color: 0xffe6a3,
+      transparent: true,
+      opacity: 0,
+    });
+    const meteorLine = new THREE.Line(meteorGeo, meteorMat);
+    scene.add(meteorLine);
+
     let animationFrameId: number;
     const clock = new THREE.Clock();
+    let meteorTimer = 0;
 
     const handleResize = () => {
       if (!container) return;
@@ -202,9 +268,27 @@ export function SolarCloser() {
     const renderLoop = () => {
       const elapsed = clock.getElapsedTime();
       uniforms.uTime.value = elapsed;
+      coronaUniforms.uTime.value = elapsed;
 
       sunMesh.rotation.y = elapsed * 0.08;
       sunMesh.rotation.x = Math.sin(elapsed * 0.05) * 0.06;
+
+      // Twinkle points
+      starMat.opacity = 0.55 + 0.35 * Math.sin(elapsed * 2.2);
+
+      // Meteor passage cycle
+      meteorTimer += 0.016;
+      if (meteorTimer > 4.5) {
+        meteorTimer = 0;
+        meteorLine.position.set(2.5 + (Math.random() - 0.5), 1.8 + Math.random(), -2);
+      }
+      if (meteorTimer < 0.6) {
+        meteorLine.position.x -= 0.12;
+        meteorLine.position.y -= 0.08;
+        meteorMat.opacity = Math.sin((meteorTimer / 0.6) * Math.PI) * 0.9;
+      } else {
+        meteorMat.opacity = 0;
+      }
 
       renderer.render(scene, camera);
       animationFrameId = requestAnimationFrame(renderLoop);
@@ -220,8 +304,12 @@ export function SolarCloser() {
       }
       geometry.dispose();
       material.dispose();
+      coronaGeo.dispose();
+      coronaMat.dispose();
       starGeo.dispose();
       starMat.dispose();
+      meteorGeo.dispose();
+      meteorMat.dispose();
       renderer.dispose();
     };
   }, []);
@@ -248,7 +336,7 @@ export function SolarCloser() {
         </div>
 
         <h2 className="solar-heading">
-          <span className="solar-heading-blackletter">LET’S BUILD</span>
+          <span className="solar-heading-display">LET’S BUILD</span>
           <span className="solar-heading-dot">.</span>
         </h2>
 
