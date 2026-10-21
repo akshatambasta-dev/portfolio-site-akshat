@@ -181,6 +181,14 @@ button:focus-visible {
   background: rgba(161, 18, 18, 0.08);
 }
 
+.cursor-ring.is-magnetic {
+  border-color: var(--deep-red);
+  background: rgba(161, 18, 18, 0.12);
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+}
+
 /* --------------------------------------------------------------------------
    Fluid & Viscous WebGL Wake Canvas (Ryan Ritzenthaler reference effect)
    -------------------------------------------------------------------------- */
@@ -227,21 +235,25 @@ button:focus-visible {
 .brand-wordmark {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.16em;
   color: var(--black);
+  cursor: pointer;
 }
 
-.brand-star {
-  color: var(--deep-red);
-  font-size: 16px;
-  transition: transform 0.4s var(--ease-editorial);
+.brand-star-svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--black);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), fill 0.3s ease;
+  will-change: transform;
 }
 
-.brand-wordmark:hover .brand-star {
-  transform: rotate(90deg) scale(1.15);
+.brand-wordmark:hover .brand-star-svg {
+  transform: rotate(180deg);
+  fill: var(--deep-red);
 }
 
 .brand-dot {
@@ -252,27 +264,73 @@ button:focus-visible {
   display: flex;
   align-items: center;
   list-style: none;
-  gap: 28px;
+  gap: 24px;
 }
 
+/* Double-Layer Roll-Up Text Hover Animation (Ritzenthaler Editorial Effect) */
 .nav-anchor {
+  display: inline-block;
+  overflow: hidden;
+  height: 18px;
+  line-height: 18px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted);
   position: relative;
-  padding: 6px 0;
+  cursor: pointer;
 }
 
-.nav-anchor:hover {
-  color: var(--black);
+.nav-anchor .roll-track {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.nav-anchor:hover .roll-track {
+  transform: translateY(-50%);
+}
+
+.roll-word {
+  display: block;
+  height: 18px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.roll-word.clone {
+  color: var(--deep-red);
+  font-weight: 700;
 }
 
 .nav-anchor.ext {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  height: auto;
+  overflow: visible;
+}
+
+.nav-inquire-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--white);
+  background-color: var(--black);
+  border-radius: 9999px;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.nav-inquire-pill:hover {
+  background-color: var(--deep-red);
+  color: var(--white);
 }
 
 .nav-anchor.ext svg {
@@ -670,7 +728,7 @@ button:focus-visible {
 .marquee-infinite-track {
   display: flex;
   width: max-content;
-  animation: marquee-scroll 42s linear infinite;
+  white-space: nowrap;
 }
 
 .marquee-phrase {
@@ -1792,6 +1850,146 @@ button:focus-visible {
   gap: 36px;
   padding: 24px;
   align-items: start;
+}
+
+/* Real Interactive List View (Ritzenthaler Editorial Table) */
+.projects-list-table-wrapper {
+  margin-top: 24px;
+  border-top: 2px solid var(--black);
+}
+
+.projects-list-table {
+  width: 100%;
+}
+
+.list-table-header {
+  display: grid;
+  grid-template-columns: 2.8fr 1.1fr 1.6fr 1.1fr 1fr;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.list-table-row {
+  display: grid;
+  grid-template-columns: 2.8fr 1.1fr 1.6fr 1.1fr 1fr;
+  align-items: center;
+  padding: 24px 20px;
+  border-bottom: 1px solid var(--line);
+  transition: background-color 0.25s ease, padding-left 0.25s ease;
+}
+
+.list-table-row:hover {
+  background-color: var(--surface-light);
+  padding-left: 28px;
+}
+
+.list-table-row .col-proj {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.list-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--deep-red);
+  font-weight: 700;
+  padding-top: 3px;
+}
+
+.list-project-name {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--black);
+  display: block;
+}
+
+.list-project-desc {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+  max-width: 480px;
+  line-height: 1.45;
+}
+
+.list-cat-pill {
+  display: inline-block;
+  padding: 4px 10px;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dark);
+}
+
+.list-tech-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-pill-mini {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background-color: var(--white);
+  color: var(--muted);
+}
+
+.list-status-badge {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--deep-red);
+  text-transform: uppercase;
+}
+
+.list-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 15px;
+  border-radius: 999px;
+  background-color: var(--black);
+  color: var(--white);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  transition: background-color 0.25s ease;
+}
+
+.list-action-link:hover {
+  background-color: var(--deep-red);
+  color: var(--white);
+}
+
+.list-action-na {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 900px) {
+  .list-table-header {
+    display: none;
+  }
+  .list-table-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 20px 12px;
+  }
 }
 
 /* Bespoke Preview Art for Projects */

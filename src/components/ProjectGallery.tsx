@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { LayoutGrid, List, ArrowUpRight, Database, Sprout, Leaf } from 'lucide-react';
+import { LayoutGrid, List, ArrowUpRight, Database, Sprout, Leaf, ExternalLink } from 'lucide-react';
 import { OTHER_PROJECTS, type ProjectItem } from '../data/portfolioData';
 
 function ProjectBespokePreview({ item }: { item: ProjectItem }) {
@@ -134,94 +134,150 @@ export function ProjectGallery() {
             <div className="toggle-pill">
               <button
                 type="button"
-                className={`toggle-btn ${viewMode === 'cards' ? 'is-active' : ''}`}
+                className={`toggle-btn magnet ${viewMode === 'cards' ? 'is-active' : ''}`}
                 aria-pressed={viewMode === 'cards'}
                 onClick={() => setViewMode('cards')}
               >
                 <LayoutGrid size={14} aria-hidden="true" />
-                <span>Cards</span>
+                <span>Card View</span>
               </button>
               <button
                 type="button"
-                className={`toggle-btn ${viewMode === 'list' ? 'is-active' : ''}`}
+                className={`toggle-btn magnet ${viewMode === 'list' ? 'is-active' : ''}`}
                 aria-pressed={viewMode === 'list'}
                 onClick={() => setViewMode('list')}
               >
                 <List size={14} aria-hidden="true" />
-                <span>List</span>
+                <span>List View</span>
               </button>
             </div>
           </div>
         </div>
 
         {/* Dynamic Project Stream: Cards View vs List View */}
-        <div className={`projects-collection-wrapper mode-${viewMode}`}>
-          {OTHER_PROJECTS.map((project) => (
-            <article key={project.id} className="project-display-card" data-reveal>
-              {/* Bespoke Interactive Preview Visual */}
-              <div className="project-preview-wrapper">
-                <ProjectBespokePreview item={project} />
-              </div>
-
-              {/* Text Meta Content */}
-              <div className="project-content-block">
-                <div className="project-header-meta">
-                  <span className="project-cat-tag">{project.category}</span>
-                  <span className="project-badge-tag">{project.badge}</span>
+        {viewMode === 'cards' ? (
+          <div className="projects-collection-wrapper mode-cards">
+            {OTHER_PROJECTS.map((project) => (
+              <article key={project.id} className="project-display-card" data-reveal>
+                {/* Bespoke Interactive Preview Visual */}
+                <div className="project-preview-wrapper">
+                  <ProjectBespokePreview item={project} />
                 </div>
 
-                <h3 className="project-card-title">
-                  {project.href ? (
-                    <a href={project.href} target="_blank" rel="noopener noreferrer" className="title-link">
-                      <span>{project.title}</span>
-                      <ArrowUpRight size={18} className="link-arrow" aria-hidden="true" />
-                    </a>
-                  ) : (
-                    <span>{project.title}</span>
-                  )}
-                </h3>
-
-                <p className="project-overview-text">{project.description}</p>
-
-                <div className="project-key-contributions">
-                  <span className="contrib-label">KEY CONTRIBUTIONS:</span>
-                  <ul className="contrib-list">
-                    {project.contributions.map((c) => (
-                      <li key={c}>{c}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="project-tech-stack">
-                  <span className="tech-label">TECHNOLOGIES:</span>
-                  <ul className="project-chips">
-                    {project.technologies.map((t) => (
-                      <li key={t} className="tech-pill">{t}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="project-recognition-box">
-                  <span className="recog-star">✦</span>
-                  <ul className="recog-items">
-                    {project.recognition.map((r) => (
-                      <li key={r}>{r}</li>
-                    ))}
-                  </ul>
-                </div>
-
-                {project.href && (
-                  <div className="project-direct-action">
-                    <a href={project.href} target="_blank" rel="noopener noreferrer" className="btn-open-live">
-                      <span>{project.liveLabel || 'Open Live Project'}</span>
-                      <ArrowUpRight size={14} aria-hidden="true" />
-                    </a>
+                {/* Text Meta Content */}
+                <div className="project-content-block">
+                  <div className="project-header-meta">
+                    <span className="project-cat-tag">{project.category}</span>
+                    <span className="project-badge-tag">{project.badge}</span>
                   </div>
-                )}
+
+                  <h3 className="project-card-title">
+                    {project.href ? (
+                      <a href={project.href} target="_blank" rel="noopener noreferrer" className="title-link magnet">
+                        <span>{project.title}</span>
+                        <ArrowUpRight size={18} className="link-arrow" aria-hidden="true" />
+                      </a>
+                    ) : (
+                      <span>{project.title}</span>
+                    )}
+                  </h3>
+
+                  <p className="project-overview-text">{project.description}</p>
+
+                  <div className="project-key-contributions">
+                    <span className="contrib-label">KEY CONTRIBUTIONS:</span>
+                    <ul className="contrib-list">
+                      {project.contributions.map((c) => (
+                        <li key={c}>{c}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="project-tech-stack">
+                    <span className="tech-label">TECHNOLOGIES:</span>
+                    <ul className="project-chips">
+                      {project.technologies.map((t) => (
+                        <li key={t} className="tech-pill">{t}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="project-recognition-box">
+                    <span className="recog-star">✦</span>
+                    <ul className="recog-items">
+                      {project.recognition.map((r) => (
+                        <li key={r}>{r}</li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  {project.href && (
+                    <div className="project-direct-action">
+                      <a href={project.href} target="_blank" rel="noopener noreferrer" className="btn-open-live magnet">
+                        <span>{project.liveLabel || 'Open Live Project'}</span>
+                        <ArrowUpRight size={14} aria-hidden="true" />
+                      </a>
+                    </div>
+                  )}
+                </div>
+              </article>
+            ))}
+          </div>
+        ) : (
+          <div className="projects-list-table-wrapper" data-reveal>
+            <div className="projects-list-table">
+              <div className="list-table-header">
+                <span className="col-proj">PROJECT / ARCHITECTURE</span>
+                <span className="col-cat">CATEGORY</span>
+                <span className="col-tech">TECH STACK</span>
+                <span className="col-badge">STATUS</span>
+                <span className="col-action">LINK</span>
               </div>
-            </article>
-          ))}
-        </div>
+              <div className="list-table-body">
+                {OTHER_PROJECTS.map((project, idx) => (
+                  <div key={project.id} className="list-table-row interactive-item">
+                    <div className="col-proj">
+                      <span className="list-index">0{idx + 1}</span>
+                      <div className="list-title-wrap">
+                        <strong className="list-project-name">{project.title}</strong>
+                        <p className="list-project-desc">{project.description}</p>
+                      </div>
+                    </div>
+                    <div className="col-cat">
+                      <span className="list-cat-pill">{project.category}</span>
+                    </div>
+                    <div className="col-tech">
+                      <div className="list-tech-pills">
+                        {project.technologies.slice(0, 3).map((t) => (
+                          <span key={t} className="tech-pill-mini">{t}</span>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="col-badge">
+                      <span className="list-status-badge">{project.badge}</span>
+                    </div>
+                    <div className="col-action">
+                      {project.href ? (
+                        <a
+                          href={project.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="list-action-link magnet"
+                          aria-label={`Open ${project.title}`}
+                        >
+                          <span>{project.liveLabel || 'View Live'}</span>
+                          <ExternalLink size={14} aria-hidden="true" />
+                        </a>
+                      ) : (
+                        <span className="list-action-na">Prototype</span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </section>
   );

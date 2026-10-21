@@ -4,7 +4,7 @@ import { PERSONAL_INFO } from '../data/portfolioData';
 
 export function OrbitBadge() {
   return (
-    <div className="orbit-badge-signature" aria-label="Signature motif: Akshat Ambasta · Systems &amp; Hardware · AI &amp; IoT">
+    <div className="orbit-badge-signature magnet" aria-label="Signature motif: Akshat Ambasta · Systems &amp; Hardware · AI &amp; IoT">
       <svg viewBox="0 0 200 200" className="orbit-svg" aria-hidden="true">
         <defs>
           <path
@@ -18,14 +18,13 @@ export function OrbitBadge() {
           </textPath>
         </text>
       </svg>
-      {/* 4-point geometric star signature */}
+      {/* 4-point organic star signature from Ryan Ritzenthaler reference */}
       <div className="orbit-star-center" aria-hidden="true">
-        <svg viewBox="0 0 48 48" className="star-icon">
+        <svg viewBox="0 0 544 544" className="star-icon">
           <path
-            d="M 24 2 L 28.5 19.5 L 46 24 L 28.5 28.5 L 24 46 L 19.5 28.5 L 2 24 L 19.5 19.5 Z"
+            d="m544,272c-144,70.69-201.31,128-272,272C201.31,400,144,342.69,0,272,144,201.31,201.31,144,272,0c70.69,144,128,201.31,272,272Z"
             fill="currentColor"
           />
-          <circle cx="24" cy="24" r="5" fill="#A11212" />
         </svg>
       </div>
     </div>
@@ -122,11 +121,11 @@ export function Hero() {
           </div>
 
           <div className="hero-actions-cluster">
-            <a href="#projects" className="btn-pill btn-dark">
+            <a href="#projects" className="btn-pill btn-dark magnet">
               <span>Explore Projects</span>
               <ArrowDown size={15} aria-hidden="true" />
             </a>
-            <a href={`mailto:${PERSONAL_INFO.email}`} className="btn-pill btn-hollow">
+            <a href={`mailto:${PERSONAL_INFO.email}`} className="btn-pill btn-hollow magnet">
               <span>Get in Touch</span>
               <ArrowUpRight size={15} aria-hidden="true" />
             </a>

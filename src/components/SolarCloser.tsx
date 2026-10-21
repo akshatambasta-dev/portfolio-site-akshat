@@ -347,12 +347,12 @@ export function SolarCloser() {
         <div className="solar-cta-group">
           <a
             href={`mailto:${PERSONAL_INFO.email}?subject=Project%20Collaboration`}
-            className="solar-primary-btn"
+            className="solar-primary-btn magnet"
           >
             <span>Start a Conversation</span>
             <ArrowUpRight size={18} aria-hidden="true" />
           </a>
-          <a href="#contact" className="solar-secondary-btn">
+          <a href="#contact" className="solar-secondary-btn magnet">
             <span>View All Channels</span>
             <span className="btn-down-arrow">↓</span>
           </a>
